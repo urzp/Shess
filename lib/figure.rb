@@ -42,8 +42,32 @@ end
 
 class Rook < Figure
 
+@@count_white = 0
+@@count_black = 0
+
   def initialize(color)
     @color = color
+    @@count_black = 0 if @@count_black == 2
+    @@count_white = 0 if @@count_white == 2
+    if @color == :white
+      @@count_white += 1
+      @symbol = "\u2656"
+      @position = [1,8] if @@count_white == 1
+      @position = [8,8] if @@count_white == 2
+    else
+      @symbol = "\u265C"
+      @@count_black += 1
+      @position = [1,1] if @@count_black == 1
+      @position = [8,1] if @@count_black == 2
+    end
+  end
+
+  def count_w
+    @@count_white
+  end
+
+  def count_b
+    @@count_black
   end
 
 end
