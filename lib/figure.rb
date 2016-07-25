@@ -106,9 +106,33 @@ end
 
 class Knight < Figure
 
-  def initialize(color)
-    @color = color
-  end
+  @@count_white = 0
+  @@count_black = 0
+
+    def initialize(color)
+      @color = color
+      @@count_black = 0 if @@count_black == 2
+      @@count_white = 0 if @@count_white == 2
+      if @color == :white
+        @@count_white += 1
+        @symbol = "\u2658"
+        @position = [2,8] if @@count_white == 1
+        @position = [7,8] if @@count_white == 2
+      else
+        @symbol = "\u265E"
+        @@count_black += 1
+        @position = [2,1] if @@count_black == 1
+        @position = [7,1] if @@count_black == 2
+      end
+    end
+
+    def count_w
+      @@count_white
+    end
+
+    def count_b
+      @@count_black
+    end
 
 end
 
