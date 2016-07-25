@@ -138,8 +138,30 @@ end
 
 class Pawn < Figure
 
-  def initialize(color)
-    @color = color
-  end
+  @@count_white = 0
+  @@count_black = 0
+
+    def initialize(color)
+      @color = color
+      @@count_black = 0 if @@count_black == 8
+      @@count_white = 0 if @@count_white == 8
+      if @color == :white
+        @@count_white += 1
+        @symbol = "\u2659"
+        @position = [@@count_white,7]
+      else
+        @symbol = "\u265F"
+        @@count_black += 1
+        @position = [@@count_black,2]
+      end
+    end
+
+    def count_w
+      @@count_white
+    end
+
+    def count_b
+      @@count_black
+    end
 
 end
