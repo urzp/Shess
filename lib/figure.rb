@@ -74,9 +74,33 @@ end
 
 class Bishop < Figure
 
-  def initialize(color)
-    @color = color
-  end
+  @@count_white = 0
+  @@count_black = 0
+
+    def initialize(color)
+      @color = color
+      @@count_black = 0 if @@count_black == 2
+      @@count_white = 0 if @@count_white == 2
+      if @color == :white
+        @@count_white += 1
+        @symbol = "\u2657"
+        @position = [3,8] if @@count_white == 1
+        @position = [6,8] if @@count_white == 2
+      else
+        @symbol = "\u265D"
+        @@count_black += 1
+        @position = [3,1] if @@count_black == 1
+        @position = [6,1] if @@count_black == 2
+      end
+    end
+
+    def count_w
+      @@count_white
+    end
+
+    def count_b
+      @@count_black
+    end
 
 end
 
