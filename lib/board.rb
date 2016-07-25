@@ -13,3 +13,13 @@ class Board
   def draw
   end
 end
+
+class Node
+  attr_reader :name, :position, :figure
+
+  def initialize(name, position, figure = nil)
+    @name = name
+    @position = position
+    @figure = figure
+  end
+end
