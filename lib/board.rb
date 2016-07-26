@@ -2,7 +2,7 @@ class Board
   attr :board
 
   def initialize
-    @board = []
+    @board = {}
 
     @figures =            [King.new(:white), Queen.new(:white), Rook.new(:white), Rook.new(:white), Bishop.new(:white), Bishop.new(:white), Knight.new(:white), Knight.new(:white)]
     @figures = @figures + [Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white)]
@@ -16,10 +16,9 @@ class Board
          x = x + 1
         name = "#{char}#{y}"
         position = [x, y]
-        figure = @figures.select{|fig| fig.position == position }
-        figure = nil if figure == []
+        figure = @figures.find{|fig| fig.position == position }
         node = Node.new(name, position, figure)
-        @board << node
+        @board[name] = node
       end
     end
   end
@@ -31,17 +30,17 @@ class Board
   end
 
   def draw
-    index = 0
+
     1.upto(8) do |y|
       x = 0
       line = ""
       "A".upto("H") do |char|
         x = x + 1
-        cell = @board[index].figure
-        cell = cell[0].symbol if cell != nil
-        cell = "   " if cell == nil
-        line = line + "\u2502" + cell
-        index = index + 1
+        cell = "#{char}#{y}"
+        figure = @board[cell].figure
+        symbol = figure.symbol if figure != nil
+        symbol = "   " if figure == nil
+        line = line + "\u2502" + symbol
       end
       if y == 1
         puts "  \u250C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u2510"
