@@ -24,6 +24,13 @@ class Human < Player
       end
     end
     puts "Please put target for your figure."
+    loop do
+      puts "Chose your target cell"
+      selection = gets.upcase.chomp
+      if check_select(selection)
+
+      end
+    end
 
   end
 
@@ -32,7 +39,7 @@ class Human < Player
   def check_select(selection)
 
     if selection.size > 2
-      puts "So many letters. Please put letter between A..G or a..g and number between 1..8 for example \"D2\" "
+      puts "Too many letters. Please put letter between A..G or a..g and number between 1..8 for example \"D2\" "
       return false
     else
 
@@ -42,7 +49,7 @@ class Human < Player
       else
 
         if !selection[0].between?("A", "G")
-          puts "You put the \"#{selection[0]}\". It is not in the board. Please put letter between A..G or a..g"
+          puts "You put the \"#{selection[0]}\". It is not in the board or char. Please put letter between A..G or a..g"
           return false
         end
 
