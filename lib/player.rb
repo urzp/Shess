@@ -6,3 +6,11 @@ class Player
     @color = color
   end
 end
+
+
+class Human < Player
+
+  def initialize(color)
+    super
+  end
+end
