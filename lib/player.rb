@@ -20,9 +20,11 @@ class Human < Player
       puts "Chose your #{@color} figure"
       selection = gets.upcase.chomp
       if check_select(selection)
-        check_figure(selection, board)
+        break if check_figure(selection, board)
       end
     end
+    puts "Please put target for your figure."
+
   end
 
 #private
@@ -53,6 +55,24 @@ class Human < Player
     return true
   end
 
+  def check_figure(selection, board)
+    node = board[selection]
+    figure = node.figure
+
+    if !figure
+      puts "The position \"#{selection}\" is empty"
+      return false
+    else
+      if figure.color != self.color
+        puts "The figure in the \"#{selection}\" is not your color"
+        return false
+      else
+        puts "your chose is \"#{selection}\" \"#{figure.color} #{figure.class}\" "
+        return true
+      end
+    end
+
+  end
 
 
 end
