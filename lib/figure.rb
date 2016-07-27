@@ -148,11 +148,11 @@ class Pawn < Figure
       if @color == :white
         @@count_white += 1
         @symbol = "\u265F" #"\u265F"
-        @position = [@@count_white,7]
+        @position = (64+@@count_white).chr+"7"
       else
         @symbol = "\u2659" #"\u2659"
         @@count_black += 1
-        @position = [@@count_black,2]
+        @position = (64+@@count_white).chr+"2"
       end
     end
 
