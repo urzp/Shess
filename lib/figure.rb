@@ -149,10 +149,12 @@ class Pawn < Figure
         @@count_white += 1
         @symbol = "\u265F" #"\u265F"
         @position = (64+@@count_white).chr+"7"
+        @derctions = [[0,-1],[0,-2],[-1,-1],[1,-1]]
       else
         @symbol = "\u2659" #"\u2659"
         @@count_black += 1
         @position = (64+@@count_black).chr+"2"
+        @derctions = [[0,1],[0,2],[1,1],[-1,1]]
       end
     end
 
@@ -163,5 +165,23 @@ class Pawn < Figure
     def count_b
       @@count_black
     end
+
+
+        def allowed_turn(target, board)
+          if board.figure(target)
+            return false if board.figure(target).color == @color  #if node is busy of same color
+          end
+          targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
+          return false if targ_der == nil
+
+          return targ_der
+        end
+
+        def sum_der_coord(position, der)
+          char = position[0].ord + der[0]
+          numb = position[1].to_i  + der[1]
+          return char.chr + numb.to_s
+        end
+
 
 end
