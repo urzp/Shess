@@ -150,6 +150,7 @@ class Pawn < Figure
   @@count_black = 0
 
     def initialize(color)
+      @count_turns = 0
       @color = color
       @@count_black = 0 if @@count_black == 8
       @@count_white = 0 if @@count_white == 8
@@ -181,8 +182,21 @@ class Pawn < Figure
       end
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
       return false if targ_der == nil
-
-      return targ_der
+      if targ_der == [0,1] || targ_der == [0,-1]
+        return false if board.figure(target) # && board.figure(target).color == self.enimy_color #if node is busy of enimy color
+      else
+        false
+      end
+      if targ_der == [1,1] || targ_der == [-1,-1] || targ_der == [1,-1] || targ_der == [-1,1]
+          if board.figure(target) && board.figure(target).color == self.enimy_color
+            return true
+          else
+            return false
+          end
+      end
+      return false if targ_der == [0,2] && board.figure(sum_der_coord(target, [0,-1])) # any figure befor Pawn
+      return false if targ_der == [0,-2] && board.figure(sum_der_coord(target, [0,1])) # any figure befor Pawn
+      return true
   end
 
 
