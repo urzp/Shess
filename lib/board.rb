@@ -15,7 +15,7 @@ class Board
       "A".upto("H") do |char|
          x = x + 1
         name = "#{char}#{y}"
-        position = [x, y]
+        position = name
         figure = @figures.find{|fig| fig.position == position }
         node = Node.new(name, position, figure)
         @board[name] = node
