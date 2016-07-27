@@ -170,15 +170,15 @@ class Pawn < Figure
     end
 
 
-        def allowed_turn(target, board)
-          if board.figure(target)
-            return false if board.figure(target).color == @color  #if node is busy of same color
-          end
-          targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
-          return false if targ_der == nil
+    def allowed_turn(target, board)
+      if board.figure(target)
+        return false if board.figure(target).color == @color  #if node is busy of same color
+      end
+      targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
+      return false if targ_der == nil
 
-          return targ_der
-        end
+      return targ_der
+  end
 
 
 
