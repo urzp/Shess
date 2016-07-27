@@ -16,19 +16,24 @@ class Human < Player
 
   def turn(board)
     puts "Please take you turn by any #{@color} figure."
-    loop do
+    while true do
       puts "Chose your #{@color} figure"
       selection = gets.upcase.chomp
       if check_select(selection)
-        break if check_figure(selection, board)
+         break if check_figure(selection, board)
       end
     end
     puts "Please put target for your figure."
-    loop do
+    while true do
       puts "Chose your target cell"
-      selection = gets.upcase.chomp
-      if check_select(selection)
-
+      selection_target = gets.upcase.chomp
+      if check_select(selection_target)
+        figure = board.figure(selection)
+        if figure.allowed_turn(selection_target, board)
+          return [selection, selection_target]
+        else
+          puts "Is not allowed the turn"
+        end
       end
     end
 
@@ -63,7 +68,7 @@ class Human < Player
   end
 
   def check_figure(selection, board)
-    figure = board[selection]
+    figure = board.figure(selection)
 
 
     if !figure
