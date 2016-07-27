@@ -15,10 +15,10 @@ class Queen < Figure
 
     if @color == :white
       @symbol = "\u265A"
-      @position = [4,8]
+      @position = "D8"
     else
       @symbol = "\u2654"
-      @position = [5,1]
+      @position = "E1"
     end
   end
 
@@ -31,10 +31,10 @@ class King < Figure
 
     if @color == :white
       @symbol = "\u265B"
-      @position = [5,8]
+      @position = "E8"
     else
       @symbol = "\u2655"
-      @position = [4,1]
+      @position = "D1"
     end
   end
 
@@ -52,13 +52,13 @@ class Rook < Figure
     if @color == :white
       @@count_white += 1
       @symbol = "\u265C"
-      @position = [1,8] if @@count_white == 1
-      @position = [8,8] if @@count_white == 2
+      @position = "A8" if @@count_white == 1
+      @position = "A8" if @@count_white == 2
     else
       @symbol = "\u2656"
       @@count_black += 1
-      @position = [1,1] if @@count_black == 1
-      @position = [8,1] if @@count_black == 2
+      @position = "A1" if @@count_black == 1
+      @position = "H1" if @@count_black == 2
     end
   end
 
@@ -84,13 +84,13 @@ class Bishop < Figure
       if @color == :white
         @@count_white += 1
         @symbol = "\u265D"
-        @position = [3,8] if @@count_white == 1
-        @position = [6,8] if @@count_white == 2
+        @position = "C8" if @@count_white == 1
+        @position = "F8" if @@count_white == 2
       else
         @symbol = "\u2657"
         @@count_black += 1
-        @position = [3,1] if @@count_black == 1
-        @position = [6,1] if @@count_black == 2
+        @position = "C1" if @@count_black == 1
+        @position = "F1" if @@count_black == 2
       end
     end
 
@@ -116,13 +116,13 @@ class Knight < Figure
       if @color == :white
         @@count_white += 1
         @symbol = "\u265E"
-        @position = [2,8] if @@count_white == 1
-        @position = [7,8] if @@count_white == 2
+        @position = "B8" if @@count_white == 1
+        @position = "G8" if @@count_white == 2
       else
         @symbol = "\u2658"
         @@count_black += 1
-        @position = [2,1] if @@count_black == 1
-        @position = [7,1] if @@count_black == 2
+        @position = "B1" if @@count_black == 1
+        @position = "G1" if @@count_black == 2
       end
     end
 
