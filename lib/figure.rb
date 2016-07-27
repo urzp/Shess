@@ -53,7 +53,7 @@ class Rook < Figure
       @@count_white += 1
       @symbol = "\u265C"
       @position = "A8" if @@count_white == 1
-      @position = "A8" if @@count_white == 2
+      @position = "H8" if @@count_white == 2
     else
       @symbol = "\u2656"
       @@count_black += 1
@@ -152,7 +152,7 @@ class Pawn < Figure
       else
         @symbol = "\u2659" #"\u2659"
         @@count_black += 1
-        @position = (64+@@count_white).chr+"2"
+        @position = (64+@@count_black).chr+"2"
       end
     end
 
