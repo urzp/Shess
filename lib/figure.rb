@@ -178,6 +178,9 @@ class Pawn < Figure
 
     def allowed_turn(target, board)
       if board.figure(target)
+        return false if board.figure(target).class == King  #if node is busy of same color
+      end
+      if board.figure(target)
         return false if board.figure(target).color == @color  #if node is busy of same color
       end
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
