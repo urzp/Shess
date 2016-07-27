@@ -9,6 +9,11 @@ class Figure
     return char.chr + numb.to_s
   end
 
+  def enimy_color
+    return :white if self.color == :black
+    return :black if self.color == :white
+  end
+
 end
 
 class Queen < Figure
