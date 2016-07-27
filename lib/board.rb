@@ -55,6 +55,10 @@ class Board
     end
   end
 
+  def figure(position)
+    return @board[position].figure
+  end
+
 end
 
 
