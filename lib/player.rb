@@ -63,8 +63,8 @@ class Human < Player
   end
 
   def check_figure(selection, board)
-    node = board[selection]
-    figure = node.figure
+    figure = board[selection]
+
 
     if !figure
       puts "The position \"#{selection}\" is empty"
