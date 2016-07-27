@@ -1,7 +1,7 @@
 class Figure
 
   attr_reader :color, :position, :symbol
-
+  attr_writer :position
 
   def initialize
   end
