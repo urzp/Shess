@@ -3,41 +3,22 @@ class Board
 
   def initialize
     @board = {}
-
     @figures =            [King.new(:white), Queen.new(:white), Rook.new(:white), Rook.new(:white), Bishop.new(:white), Bishop.new(:white), Knight.new(:white), Knight.new(:white)]
     @figures = @figures + [Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white), Pawn.new(:white)]
     @figures = @figures + [King.new(:black), Queen.new(:black), Rook.new(:black), Rook.new(:black), Bishop.new(:black), Bishop.new(:black), Knight.new(:black), Knight.new(:black)]
     @figures = @figures + [Pawn.new(:black), Pawn.new(:black), Pawn.new(:black), Pawn.new(:black), Pawn.new(:black), Pawn.new(:black), Pawn.new(:black), Pawn.new(:black)]
-
-
-    1.upto(8) do |y|
-      x = 0
-      "A".upto("H") do |char|
-         x = x + 1
-        name = "#{char}#{y}"
-        position = name
-        figure = @figures.find{|fig| fig.position == position }
-        node = Node.new(name, position, figure)
-        @board[name] = node
-      end
-    end
-  end
-
-  def position?(figure)
-  end
-
-  def move(figure, x, y)
+    refull_board(@figures)
   end
 
   def draw
-
+    refull_board(@figures)
     1.upto(8) do |y|
       x = 0
       line = ""
       "A".upto("H") do |char|
         x = x + 1
         cell = "#{char}#{y}"
-        figure = @board[cell].figure
+        figure = @board[cell]
         symbol = figure.symbol if figure != nil
         symbol = "   " if figure == nil
         line = line + "\u2502" + symbol
@@ -56,9 +37,29 @@ class Board
   end
 
   def figure(position)
-    return @board[position].figure
+    return @board[position]
   end
 
+  def tool_move(position_figure, new_position)
+    figure = self.figure(position_figure)
+    print figure
+    puts
+    figure.position = new_position
+    self.draw
+  end
+
+  def refull_board(figures)
+    1.upto(8) do |y|
+      x = 0
+      "A".upto("H") do |char|
+         x = x + 1
+        name = "#{char}#{y}"
+        position = name
+        figure = figures.find{|fig| fig.position == position }
+        @board[name] = figure
+      end
+    end
+  end
 end
 
 
