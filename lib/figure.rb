@@ -3,7 +3,10 @@ class Figure
   attr_reader :color, :position, :symbol
   attr_writer :position
 
-  def initialize
+  def sum_der_coord(position, der)
+    char = position[0].ord + der[0]
+    numb = position[1].to_i  + der[1]
+    return char.chr + numb.to_s
   end
 
 end
@@ -177,11 +180,7 @@ class Pawn < Figure
           return targ_der
         end
 
-        def sum_der_coord(position, der)
-          char = position[0].ord + der[0]
-          numb = position[1].to_i  + der[1]
-          return char.chr + numb.to_s
-        end
+
 
 
 end
