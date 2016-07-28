@@ -14,6 +14,10 @@ class Figure
     return :black if self.color == :white
   end
 
+  def turn(target)
+    @position = target
+  end
+
 end
 
 class Queen < Figure
