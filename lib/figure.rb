@@ -202,7 +202,10 @@ class Pawn < Figure
       return true
   end
 
-
+  def turn(target)
+    @derctions.delete_at(1) if @derctions.size == 4
+    @position = target
+  end
 
 
 end
