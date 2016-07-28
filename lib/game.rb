@@ -10,8 +10,9 @@ class Game
     target = turn[1]
     figure = board.figure(start)
     figure.turn(target)
-    figure = board.figure(end)
+    figure = board.figure(target)
     figure.bit if figure && figure.class == King
+    board.draw
   end
 
 end
