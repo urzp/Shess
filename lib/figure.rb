@@ -18,6 +18,10 @@ class Figure
     @position = target
   end
 
+  def bit
+    @position = "I1"
+  end
+
 end
 
 class Queen < Figure
