@@ -42,8 +42,6 @@ class Board
 
   def tool_move(position_figure, new_position)
     figure = self.figure(position_figure)
-    print figure
-    puts
     figure.position = new_position
     self.draw
   end
