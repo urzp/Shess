@@ -14,11 +14,12 @@ class Human < Player
     super
   end
 
-  def turn(board)
+  def turn(board,turn = nil)
     puts "Please take you turn by any #{@color} figure."
     while true do
       puts "Chose your #{@color} figure"
-      selection = gets.upcase.chomp
+      selection = turn[0] if turn != nil
+      selection = gets.upcase.chomp if turn == nil
       if check_select(selection)
          break if check_figure(selection, board)
       end
@@ -26,7 +27,8 @@ class Human < Player
     puts "Please put target for your figure."
     while true do
       puts "Chose your target cell"
-      selection_target = gets.upcase.chomp
+      selection_targe = turn[1] if turn != nil
+      selection_target = gets.upcase.chomp if turn == nil
       if check_select(selection_target)
         figure = board.figure(selection)
         if figure.allowed_turn(selection_target, board)
