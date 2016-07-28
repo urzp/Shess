@@ -37,6 +37,7 @@ class Board
   end
 
   def figure(position)
+    self.refull_board
     return @board[position]
   end
 
@@ -46,7 +47,7 @@ class Board
     self.draw
   end
 
-  def refull_board(figures)
+  def refull_board(figures = @figures)
     1.upto(8) do |y|
       x = 0
       "A".upto("H") do |char|
