@@ -1,9 +1,12 @@
 class Figure
 
+
+
   attr_reader :color, :position, :symbol
   attr_writer :position
 
   def initialize(color)
+    @@out = 0
     @count_turn = 0
     @color = color
   end
@@ -32,7 +35,8 @@ class Figure
   end
 
   def bit
-    @position = "I1"
+    @@out += 1
+    @position = "out" + @@out.to_s
   end
 
   def check_target_node (target, board)
