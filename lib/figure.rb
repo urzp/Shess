@@ -138,12 +138,7 @@ class Bishop < Figure
 
     def allowed_turn(target, board)
       return false if !check_target_node(target, board)
-      targ_der = @derctions.find do |der|
-        (0..8).any? do |n|
-           next_node = next_node_der(der, n)
-           sum_der_coord(@position, next_node) == target
-         end
-      end
+      targ_der = @derctions.find { |der| (0..8).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
       return false if targ_der == nil
       cell_scan = sum_der_coord(@position, targ_der)
       unless cell_scan == target
