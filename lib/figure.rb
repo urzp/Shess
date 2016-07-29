@@ -129,6 +129,7 @@ class Knight < Figure
       @color = color
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
+      @derctions = [ [1,2], [2,1], [2,-1], [1,-2], [-1,-2], [-2,-1], [-2,1], [-1,2] ]
       if @color == :white
         @@count_white += 1
         @symbol = "\u265E"
@@ -148,6 +149,18 @@ class Knight < Figure
 
     def count_b
       @@count_black
+    end
+
+    def allowed_turn(target, board)
+      if board.figure(target)
+        return false if board.figure(target).class == King
+      end
+      if board.figure(target)
+        return false if board.figure(target).color == @color  #if node is busy of same color
+      end
+      targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
+      return false if targ_der == nil
+      return true
     end
 
 end
@@ -186,7 +199,7 @@ class Pawn < Figure
 
     def allowed_turn(target, board)
       if board.figure(target)
-        return false if board.figure(target).class == King  #if node is busy of same color
+        return false if board.figure(target).class == King
       end
       if board.figure(target)
         return false if board.figure(target).color == @color  #if node is busy of same color
@@ -205,8 +218,8 @@ class Pawn < Figure
             return false
           end
       end
-      return false if targ_der == [0,2] && board.figure(sum_der_coord(target, [0,-1])) # any figure befor Pawn
-      return false if targ_der == [0,-2] && board.figure(sum_der_coord(target, [0,1])) # any figure befor Pawn
+      return false if targ_der == [0,2] && board.figure(sum_der_coord(target, [0,-1])) # any figure before Pawn
+      return false if targ_der == [0,-2] && board.figure(sum_der_coord(target, [0,1])) # any figure before Pawn
       return true
   end
 
