@@ -39,6 +39,20 @@ class Figure
     return true
   end
 
+  def allowed_turn(target, board)
+    return false if !check_target_node(target, board)
+    targ_der = @derctions.find { |der| (0..8).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
+    return false if targ_der == nil
+    cell_scan = sum_der_coord(@position, targ_der)
+    unless cell_scan == target
+      return false if board.figure(cell_scan)
+      targ_der[0]+=targ_der[0] #thake next node at the derection
+      targ_der[1]+=targ_der[1]
+      cell_scan = sum_der_coord(@position, targ_der)
+    end
+    return true
+  end
+
 end
 
 class Queen < Figure
@@ -137,17 +151,7 @@ class Bishop < Figure
     end
 
     def allowed_turn(target, board)
-      return false if !check_target_node(target, board)
-      targ_der = @derctions.find { |der| (0..8).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
-      return false if targ_der == nil
-      cell_scan = sum_der_coord(@position, targ_der)
-      unless cell_scan == target
-        return false if board.figure(cell_scan)
-        targ_der[0]+=targ_der[0] #thake next node at the derection
-        targ_der[1]+=targ_der[1]
-        cell_scan = sum_der_coord(@position, targ_der)
-      end
-      return true
+      super
     end
 
 end
