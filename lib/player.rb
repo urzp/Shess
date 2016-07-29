@@ -27,7 +27,7 @@ class Human < Player
     puts "Please put target for your figure."
     while true do
       puts "Chose your target cell"
-      selection_targe = turn[1] if turn != nil
+      selection_target = turn[1] if turn != nil
       selection_target = gets.upcase.chomp if turn == nil
       if check_select(selection_target)
         figure = board.figure(selection)
