@@ -9,6 +9,13 @@ class Figure
     return char.chr + numb.to_s
   end
 
+  def next_node_der(der, number)
+    out_der =[]
+    out_der[0] =  der[0] + der[0]*number
+    out_der[1] =  der[1] + der[1]*number
+    return [out_der[0], out_der[1]]
+  end
+
   def enimy_color
     return :white if self.color == :black
     return :black if self.color == :white
@@ -107,6 +114,7 @@ class Bishop < Figure
       @color = color
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
+      @derctions = [ [1,1], [1,-1], [-1,-1],  [-1,1] ]
       if @color == :white
         @@count_white += 1
         @symbol = "\u265D"
@@ -126,6 +134,25 @@ class Bishop < Figure
 
     def count_b
       @@count_black
+    end
+
+    def allowed_turn(target, board)
+      return false if !check_target_node(target, board)
+      targ_der = @derctions.find do |der|
+        (0..8).any? do |n|
+           next_node = next_node_der(der, n)
+           sum_der_coord(@position, next_node) == target
+         end
+      end
+      return false if targ_der == nil
+      cell_scan = sum_der_coord(@position, targ_der)
+      unless cell_scan == target
+        return false if board.figure(cell_scan)
+        targ_der[0]+=targ_der[0] #thake next node at the derection
+        targ_der[1]+=targ_der[1]
+        cell_scan = sum_der_coord(@position, targ_der)
+      end
+      return true
     end
 
 end
