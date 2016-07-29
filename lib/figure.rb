@@ -3,6 +3,10 @@ class Figure
   attr_reader :color, :position, :symbol
   attr_writer :position
 
+  def initialize(color)
+    @count_turn = 0
+  end
+
   def sum_der_coord(position, der)
     char = position[0].ord + der[0]
     numb = position[1].to_i  + der[1]
@@ -23,6 +27,7 @@ class Figure
 
   def turn(target)
     @position = target
+    @count_turn += 1
   end
 
   def bit
@@ -59,6 +64,7 @@ end
 class Queen < Figure
 
   def initialize(color)
+    super
     @color = color
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
     @length_derctions = 8
@@ -76,6 +82,7 @@ end
 class King < Figure
 
   def initialize(color)
+    super
     @color = color
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
     @length_derctions = 1
@@ -88,6 +95,10 @@ class King < Figure
     end
   end
 
+  def allowed_turn(target, board)
+    super
+  end
+
 end
 
 class Rook < Figure
@@ -96,6 +107,7 @@ class Rook < Figure
 @@count_black = 0
 
   def initialize(color)
+    super
     @color = color
     @@count_black = 0 if @@count_black == 2
     @@count_white = 0 if @@count_white == 2
@@ -134,6 +146,7 @@ class Bishop < Figure
   @@count_black = 0
 
     def initialize(color)
+      super
       @color = color
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
@@ -172,6 +185,7 @@ class Knight < Figure
   @@count_black = 0
 
     def initialize(color)
+      super
       @color = color
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
@@ -212,6 +226,7 @@ class Pawn < Figure
   @@count_black = 0
 
     def initialize(color)
+      super
       @count_turns = 0
       @color = color
       @@count_black = 0 if @@count_black == 8
