@@ -25,7 +25,7 @@ class Human < Player
          break if check_figure(selection, board)
       end
       counter += 1
-      return false if counter > 10
+      return false if counter > 5
     end
     puts "Please put target for your figure."
     counter = 0
@@ -42,7 +42,7 @@ class Human < Player
         end
       end
       counter += 1
-      return false if counter > 10  
+      return false if counter > 5  
     end
 
   end
