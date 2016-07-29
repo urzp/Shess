@@ -5,6 +5,7 @@ class Figure
 
   def initialize(color)
     @count_turn = 0
+    @color = color
   end
 
   def sum_der_coord(position, der)
@@ -65,7 +66,6 @@ class Queen < Figure
 
   def initialize(color)
     super
-    @color = color
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
     @length_derctions = 8
     if @color == :white
@@ -83,7 +83,6 @@ class King < Figure
 
   def initialize(color)
     super
-    @color = color
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
     @length_derctions = 1
     if @color == :white
@@ -108,7 +107,6 @@ class Rook < Figure
 
   def initialize(color)
     super
-    @color = color
     @@count_black = 0 if @@count_black == 2
     @@count_white = 0 if @@count_white == 2
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0] ]
@@ -147,7 +145,6 @@ class Bishop < Figure
 
     def initialize(color)
       super
-      @color = color
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
       @derctions = [ [1,1], [1,-1], [-1,-1],  [-1,1] ]
@@ -186,7 +183,6 @@ class Knight < Figure
 
     def initialize(color)
       super
-      @color = color
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
       @derctions = [ [1,2], [2,1], [2,-1], [1,-2], [-1,-2], [-2,-1], [-2,1], [-1,2] ]
@@ -227,8 +223,6 @@ class Pawn < Figure
 
     def initialize(color)
       super
-      @count_turns = 0
-      @color = color
       @@count_black = 0 if @@count_black == 8
       @@count_white = 0 if @@count_white == 8
       if @color == :white
