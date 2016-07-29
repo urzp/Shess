@@ -55,8 +55,8 @@ class Human < Player
         return false
       else
 
-        if !selection[0].between?("A", "G")
-          puts "You put the \"#{selection[0]}\". It is not in the board or char. Please put letter between A..G or a..g"
+        if !selection[0].between?("A", "H")
+          puts "You put the \"#{selection[0]}\". It is not in the board or char. Please put letter between A..H or a..h"
           return false
         end
 
