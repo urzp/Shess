@@ -22,6 +22,16 @@ class Figure
     @position = "I1"
   end
 
+  def check_target_node (target, board)
+    if board.figure(target)
+      return false if board.figure(target).class == King
+    end
+    if board.figure(target)
+      return false if board.figure(target).color == @color  #if node is busy of same color
+    end
+    return true
+  end
+
 end
 
 class Queen < Figure
@@ -152,12 +162,7 @@ class Knight < Figure
     end
 
     def allowed_turn(target, board)
-      if board.figure(target)
-        return false if board.figure(target).class == King
-      end
-      if board.figure(target)
-        return false if board.figure(target).color == @color  #if node is busy of same color
-      end
+      return false if !check_target_node(target, board)
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
       return false if targ_der == nil
       return true
@@ -198,12 +203,7 @@ class Pawn < Figure
 
 
     def allowed_turn(target, board)
-      if board.figure(target)
-        return false if board.figure(target).class == King
-      end
-      if board.figure(target)
-        return false if board.figure(target).color == @color  #if node is busy of same color
-      end
+      return false if !check_target_node(target, board)
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
       return false if targ_der == nil
       if targ_der == [0,1] || targ_der == [0,-1]
