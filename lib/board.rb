@@ -23,15 +23,28 @@ class Board
         symbol = "   " if figure == nil
         line = line + "\u2502" + symbol
       end
+      figure = @board["out" + y.to_s]
+      symbol = figure.symbol if figure != nil
+      symbol = "   " if figure == nil
+      out1 = symbol
+      figure = @board["out" + (8 + y).to_s]
+      symbol = figure.symbol if figure != nil
+      symbol = "   " if figure == nil
+      out2 = symbol
+      figure = @board["out" + (16 + y).to_s]
+      symbol = figure.symbol if figure != nil
+      symbol = "   " if figure == nil
+      out3 = symbol
+
       if y == 1
-        puts "  \u250C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u2510"
+        puts "  \u250C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u2510 --------------"
       else
-        puts "  \u251C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u2524"
+        puts "  \u251C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u2524 --------------"
       end
-      puts "#{y} #{line}\u2502"
+      puts "#{y} #{line}\u2502  #{out1}  #{out2} #{out3} "
       if y == 8
-        puts "  \u2514\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2518"
-        puts "    A   B   C   D   E   F   G   H "
+        puts "  \u2514\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2518 --------------"
+        puts "    A   B   C   D   E   F   G   H    "
       end
     end
   end
@@ -58,7 +71,14 @@ class Board
         @board[name] = figure
       end
     end
+    1.upto(32) do |y|
+      name = "out#{y}"
+      position = name
+      figure = figures.find{ |fig| fig.position == position }
+      @board[name] = figure
+    end
   end
+
 end
 
 

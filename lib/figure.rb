@@ -1,12 +1,27 @@
 class Figure
 
+
+
   attr_reader :color, :position, :symbol
   attr_writer :position
+
+  def initialize(color)
+    @@out = 0
+    @count_turn = 0
+    @color = color
+  end
 
   def sum_der_coord(position, der)
     char = position[0].ord + der[0]
     numb = position[1].to_i  + der[1]
     return char.chr + numb.to_s
+  end
+
+  def next_node_der(der, number)
+    out_der =[]
+    out_der[0] =  der[0] + der[0]*number
+    out_der[1] =  der[1] + der[1]*number
+    return [out_der[0], out_der[1]]
   end
 
   def enimy_color
@@ -16,10 +31,37 @@ class Figure
 
   def turn(target)
     @position = target
+    @count_turn += 1
   end
 
   def bit
-    @position = "I1"
+    @@out += 1
+    @position = "out" + @@out.to_s
+  end
+
+  def check_target_node (target, board)
+    if board.figure(target)
+      return false if board.figure(target).class == King
+    end
+    if board.figure(target)
+      return false if board.figure(target).color == @color  #if node is busy of same color
+    end
+    return true
+  end
+
+  def allowed_turn(target, board)
+    return false if !check_target_node(target, board)
+    targ_der = @derctions.find { |der| (0...@length_derctions).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
+    return false if targ_der == nil
+    cell_scan = sum_der_coord(@position, targ_der)
+    number = 0
+    until cell_scan == target do
+      return false if board.figure(cell_scan)
+      next_node = next_node_der(targ_der, number) #thake next node at the derection
+      cell_scan = sum_der_coord(@position, next_node)
+      number += 1
+    end
+    return true
   end
 
 end
@@ -27,8 +69,9 @@ end
 class Queen < Figure
 
   def initialize(color)
-    @color = color
-
+    super
+    @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
+    @length_derctions = 8
     if @color == :white
       @symbol = "\u265A"
       @position = "D8"
@@ -43,8 +86,9 @@ end
 class King < Figure
 
   def initialize(color)
-    @color = color
-
+    super
+    @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
+    @length_derctions = 1
     if @color == :white
       @symbol = "\u265B"
       @position = "E8"
@@ -52,6 +96,10 @@ class King < Figure
       @symbol = "\u2655"
       @position = "D1"
     end
+  end
+
+  def allowed_turn(target, board)
+    super
   end
 
 end
@@ -62,9 +110,11 @@ class Rook < Figure
 @@count_black = 0
 
   def initialize(color)
-    @color = color
+    super
     @@count_black = 0 if @@count_black == 2
     @@count_white = 0 if @@count_white == 2
+    @derctions = [ [0,1], [0,-1], [-1,0],  [1,0] ]
+    @length_derctions = 8
     if @color == :white
       @@count_white += 1
       @symbol = "\u265C"
@@ -86,6 +136,10 @@ class Rook < Figure
     @@count_black
   end
 
+  def allowed_turn(target, board)
+    super
+  end
+
 end
 
 class Bishop < Figure
@@ -94,9 +148,11 @@ class Bishop < Figure
   @@count_black = 0
 
     def initialize(color)
-      @color = color
+      super
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
+      @derctions = [ [1,1], [1,-1], [-1,-1],  [-1,1] ]
+      @length_derctions = 8
       if @color == :white
         @@count_white += 1
         @symbol = "\u265D"
@@ -118,6 +174,10 @@ class Bishop < Figure
       @@count_black
     end
 
+    def allowed_turn(target, board)
+      super
+    end
+
 end
 
 class Knight < Figure
@@ -126,9 +186,10 @@ class Knight < Figure
   @@count_black = 0
 
     def initialize(color)
-      @color = color
+      super
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
+      @derctions = [ [1,2], [2,1], [2,-1], [1,-2], [-1,-2], [-2,-1], [-2,1], [-1,2] ]
       if @color == :white
         @@count_white += 1
         @symbol = "\u265E"
@@ -150,6 +211,13 @@ class Knight < Figure
       @@count_black
     end
 
+    def allowed_turn(target, board)
+      return false if !check_target_node(target, board)
+      targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
+      return false if targ_der == nil
+      return true
+    end
+
 end
 
 class Pawn < Figure
@@ -158,8 +226,7 @@ class Pawn < Figure
   @@count_black = 0
 
     def initialize(color)
-      @count_turns = 0
-      @color = color
+      super
       @@count_black = 0 if @@count_black == 8
       @@count_white = 0 if @@count_white == 8
       if @color == :white
@@ -185,12 +252,7 @@ class Pawn < Figure
 
 
     def allowed_turn(target, board)
-      if board.figure(target)
-        return false if board.figure(target).class == King  #if node is busy of same color
-      end
-      if board.figure(target)
-        return false if board.figure(target).color == @color  #if node is busy of same color
-      end
+      return false if !check_target_node(target, board)
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
       return false if targ_der == nil
       if targ_der == [0,1] || targ_der == [0,-1]
@@ -205,8 +267,8 @@ class Pawn < Figure
             return false
           end
       end
-      return false if targ_der == [0,2] && board.figure(sum_der_coord(target, [0,-1])) # any figure befor Pawn
-      return false if targ_der == [0,-2] && board.figure(sum_der_coord(target, [0,1])) # any figure befor Pawn
+      return false if targ_der == [0,2] && board.figure(sum_der_coord(target, [0,-1])) # any figure before Pawn
+      return false if targ_der == [0,-2] && board.figure(sum_der_coord(target, [0,1])) # any figure before Pawn
       return true
   end
 
