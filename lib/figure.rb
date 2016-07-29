@@ -60,7 +60,7 @@ class Queen < Figure
 
   def initialize(color)
     @color = color
-
+    @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
     if @color == :white
       @symbol = "\u265A"
       @position = "D8"
