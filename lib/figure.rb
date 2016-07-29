@@ -44,11 +44,12 @@ class Figure
     targ_der = @derctions.find { |der| (0..8).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
     return false if targ_der == nil
     cell_scan = sum_der_coord(@position, targ_der)
-    unless cell_scan == target
+    number = 0
+    until cell_scan == target do
       return false if board.figure(cell_scan)
-      targ_der[0]+=targ_der[0] #thake next node at the derection
-      targ_der[1]+=targ_der[1]
-      cell_scan = sum_der_coord(@position, targ_der)
+      next_node = next_node_der(targ_der, number) #thake next node at the derection
+      cell_scan = sum_der_coord(@position, next_node)
+      number += 1
     end
     return true
   end
@@ -96,6 +97,7 @@ class Rook < Figure
     @color = color
     @@count_black = 0 if @@count_black == 2
     @@count_white = 0 if @@count_white == 2
+    @derctions = [ [0,1], [0,-1], [-1,0],  [1,0] ]
     if @color == :white
       @@count_white += 1
       @symbol = "\u265C"
@@ -115,6 +117,10 @@ class Rook < Figure
 
   def count_b
     @@count_black
+  end
+
+  def allowed_turn(target, board)
+    super
   end
 
 end
