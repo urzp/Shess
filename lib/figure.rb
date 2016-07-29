@@ -41,7 +41,7 @@ class Figure
 
   def allowed_turn(target, board)
     return false if !check_target_node(target, board)
-    targ_der = @derctions.find { |der| (0..8).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
+    targ_der = @derctions.find { |der| (0...@length_derctions).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
     return false if targ_der == nil
     cell_scan = sum_der_coord(@position, targ_der)
     number = 0
@@ -61,6 +61,7 @@ class Queen < Figure
   def initialize(color)
     @color = color
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
+    @length_derctions = 8
     if @color == :white
       @symbol = "\u265A"
       @position = "D8"
@@ -76,7 +77,8 @@ class King < Figure
 
   def initialize(color)
     @color = color
-
+    @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
+    @length_derctions = 1
     if @color == :white
       @symbol = "\u265B"
       @position = "E8"
@@ -98,6 +100,7 @@ class Rook < Figure
     @@count_black = 0 if @@count_black == 2
     @@count_white = 0 if @@count_white == 2
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0] ]
+    @length_derctions = 8
     if @color == :white
       @@count_white += 1
       @symbol = "\u265C"
@@ -135,6 +138,7 @@ class Bishop < Figure
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
       @derctions = [ [1,1], [1,-1], [-1,-1],  [-1,1] ]
+      @length_derctions = 8
       if @color == :white
         @@count_white += 1
         @symbol = "\u265D"
