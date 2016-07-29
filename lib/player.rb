@@ -16,6 +16,7 @@ class Human < Player
 
   def turn(board,turn = nil)
     puts "Please take you turn by any #{@color} figure."
+    counter = 0
     while true do
       puts "Chose your #{@color} figure"
       selection = turn[0] if turn != nil
@@ -23,8 +24,11 @@ class Human < Player
       if check_select(selection)
          break if check_figure(selection, board)
       end
+      counter += 1
+      return false if counter > 10
     end
     puts "Please put target for your figure."
+    counter = 0
     while true do
       puts "Chose your target cell"
       selection_target = turn[1] if turn != nil
@@ -34,9 +38,11 @@ class Human < Player
         if figure.allowed_turn(selection_target, board)
           return [selection, selection_target]
         else
-          puts "Is not allowed the turn"
+          puts "Is not allowed the turn #{selection_target}"
         end
       end
+      counter += 1
+      return false if counter > 10  
     end
 
   end
