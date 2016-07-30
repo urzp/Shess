@@ -267,8 +267,8 @@ class Pawn < Figure
             return false
           end
       end
-      return false if targ_der == [0,2] && board.figure(sum_der_coord(target, [0,-1])) # any figure before Pawn
-      return false if targ_der == [0,-2] && board.figure(sum_der_coord(target, [0,1])) # any figure before Pawn
+      return false if targ_der == [0,2] && (board.figure(sum_der_coord(@position, [0,1])) != nil || board.figure(sum_der_coord(@position, [0,2])) != nil )# any figure before Pawn
+      return false if targ_der == [0,-2] && (board.figure(sum_der_coord(@position, [0,-1])) != nil || board.figure(sum_der_coord(@position, [0,-2])) != nil ) # any figure before Pawn
       return true
   end
 
