@@ -10,6 +10,10 @@ class Board
     refull_board(@figures)
   end
 
+  def add_figure(figure)
+    @figures << figure
+  end
+
   def draw
     refull_board(@figures)
     1.upto(8) do |y|
