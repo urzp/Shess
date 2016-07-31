@@ -15,4 +15,26 @@ class Game
     board.draw
   end
 
+
+  def transform_pawn(selection = nil, pawn, board)
+    while selection != "Q" && selection != "R" && selection != "B" && selection != "K" do
+    puts "Puts the new figure. Where \"Q\" - Queen, \"R\" - Rook, \"B\" - Bishop, \"K\" - Knight"
+    selection = gets.upcase.chomp
+    end
+    case  selection
+      when "Q"
+         figure = Queen.new(pawn.color)
+      when "R"
+        figure = Rook.new(pawn.color)
+      when "B"
+        figure = Bishop.new(pawn.color)
+      when "K"
+        figure = Kight.new(pawn.color)
+    end
+    figure.position = pawn.position
+    board.add_figure(figure)
+    puts figure.position
+    pawn.position = :basket
+  end
+
 end
