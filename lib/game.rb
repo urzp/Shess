@@ -11,6 +11,7 @@ class Game
     figure = board.figure(start)
     figure_t = board.figure(target)
     figure.turn(target)
+    transform_pawn("K", figure, board) if figure.class == Pawn && ( figure.position[1] == "1" || figure.position[1] == "8" )
     figure_t.bit if figure_t && figure_t.class != King
     board.draw
   end
@@ -29,7 +30,7 @@ class Game
       when "B"
         figure = Bishop.new(pawn.color)
       when "K"
-        figure = Kight.new(pawn.color)
+        figure = Knight.new(pawn.color)
     end
     figure.position = pawn.position
     board.add_figure(figure)
