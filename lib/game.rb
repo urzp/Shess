@@ -11,7 +11,7 @@ class Game
     figure = board.figure(start)
     figure_t = board.figure(target)
     figure.turn(target)
-    transform_pawn("K", figure, board) if figure.class == Pawn && ( figure.position[1] == "1" || figure.position[1] == "8" )
+    transform_pawn( figure, board) if figure.class == Pawn && ( figure.position[1] == "1" || figure.position[1] == "8" )
     figure_t.bit if figure_t && figure_t.class != King
     board.draw
   end
@@ -36,6 +36,13 @@ class Game
     board.add_figure(figure)
     puts figure.position
     pawn.position = :basket
+  end
+
+  def broken?(target, board, color)
+    figures =  board.figures.select{ |figure| figure.color == color && figure.position[0].between?("A", "H") }
+    cover_figures = figures.select { |figure| figure.allowed_turn( target, board, true) }
+    return cover_figures if cover_figures != []
+    return false
   end
 
 end
