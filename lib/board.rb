@@ -1,5 +1,5 @@
 class Board
-  attr :board
+  attr :board, :figures
 
   def initialize
     @board = {}
