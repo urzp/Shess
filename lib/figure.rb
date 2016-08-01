@@ -49,7 +49,7 @@ class Figure
     return true
   end
 
-  def allowed_turn(target, board)
+  def allowed_turn(target, board, bit = false)
     return false if !check_target_node(target, board)
     targ_der = @derctions.find { |der| (0...@length_derctions).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
     return false if targ_der == nil
@@ -98,7 +98,7 @@ class King < Figure
     end
   end
 
-  def allowed_turn(target, board)
+  def allowed_turn(target, board, bit = false)
     super
   end
 
@@ -136,7 +136,7 @@ class Rook < Figure
     @@count_black
   end
 
-  def allowed_turn(target, board)
+  def allowed_turn(target, board, bit = false)
     super
   end
 
@@ -174,7 +174,7 @@ class Bishop < Figure
       @@count_black
     end
 
-    def allowed_turn(target, board)
+    def allowed_turn(target, board, bit = false)
       super
     end
 
@@ -211,7 +211,7 @@ class Knight < Figure
       @@count_black
     end
 
-    def allowed_turn(target, board)
+    def allowed_turn(target, board, bit = false)
       return false if !check_target_node(target, board)
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
       return false if targ_der == nil
@@ -251,22 +251,25 @@ class Pawn < Figure
     end
 
 
-    def allowed_turn(target, board)
+    def allowed_turn(target, board, bit = false)  # bit = true for ask broken node
       return false if !check_target_node(target, board)
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
       return false if targ_der == nil
       if targ_der == [0,1] || targ_der == [0,-1]
         return false if board.figure(target) # && board.figure(target).color == self.enimy_color #if node is busy of enimy color
+        return false if bit ==  true
       else
         false
       end
       if targ_der == [1,1] || targ_der == [-1,-1] || targ_der == [1,-1] || targ_der == [-1,1]
+        return true if bit ==  true
           if board.figure(target) && board.figure(target).color == self.enimy_color
             return true
           else
             return false
           end
       end
+      return false if bit ==  true
       return false if targ_der == [0,2] && (board.figure(sum_der_coord(@position, [0,1])) != nil || board.figure(sum_der_coord(@position, [0,2])) != nil )# any figure before Pawn
       return false if targ_der == [0,-2] && (board.figure(sum_der_coord(@position, [0,-1])) != nil || board.figure(sum_der_coord(@position, [0,-2])) != nil ) # any figure before Pawn
       return true
