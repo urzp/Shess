@@ -44,6 +44,13 @@ class Game
     return cover_figures if cover_figures != []
     return false
   end
+  
+  def any_move_to?(target, board, color)
+    figures =  board.figures.select{ |figure| figure.color == color && figure.position[0].between?("A", "H") }
+    cover_figures = figures.select { |figure| figure.allowed_turn( target, board) }
+    return cover_figures if cover_figures != []
+    return false
+  end
 
   def ability_block_figure?(figure, target, board)
     return false if figure.class == Pawn || figure.class == Knight || figure.class == King
