@@ -49,9 +49,14 @@ class Figure
     return true
   end
 
+  def find_derection(target)
+    targ_der = @derctions.find { |der| (0...@length_derctions).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
+    return targ_der
+  end
+
   def allowed_turn(target, board, bit = false)
     return false if !check_target_node(target, board)
-    targ_der = @derctions.find { |der| (0...@length_derctions).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
+    targ_der = find_derection(target)
     return false if targ_der == nil
     cell_scan = sum_der_coord(@position, targ_der)
     number = 0
