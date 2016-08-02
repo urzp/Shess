@@ -54,18 +54,22 @@ class Figure
     return targ_der
   end
 
+  def scan_derect(targ_der, target)
+    cell_scan = sum_der_coord(@position, targ_der)
+    number = 0
+    until cell_scan == target do
+      return false if yield(cell_scan) == false
+      next_node = next_node_der(targ_der, number)
+      cell_scan = sum_der_coord(@position, next_node)
+      number += 1
+    end
+  end
+
   def allowed_turn(target, board, bit = false)
     return false if !check_target_node(target, board)
     targ_der = find_derection(target)
     return false if targ_der == nil
-    cell_scan = sum_der_coord(@position, targ_der)
-    number = 0
-    until cell_scan == target do
-      return false if board.figure(cell_scan)
-      next_node = next_node_der(targ_der, number) #thake next node at the derection
-      cell_scan = sum_der_coord(@position, next_node)
-      number += 1
-    end
+    return false if scan_derect(targ_der, target){ |cell_scan| !board.figure(cell_scan) } == false
     return true
   end
 
