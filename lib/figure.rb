@@ -58,7 +58,7 @@ class Figure
     cell_scan = sum_der_coord(@position, targ_der)
     number = 0
     until cell_scan == target do
-      return false if yield(cell_scan) == false
+      return true if yield(cell_scan)
       next_node = next_node_der(targ_der, number)
       cell_scan = sum_der_coord(@position, next_node)
       number += 1
@@ -69,7 +69,7 @@ class Figure
     return false if !check_target_node(target, board)
     targ_der = find_derection(target)
     return false if targ_der == nil
-    return false if scan_derect(targ_der, target){ |cell_scan| !board.figure(cell_scan) } == false
+    return false if scan_derect(targ_der, target){ |cell_scan| board.figure(cell_scan) }
     return true
   end
 
