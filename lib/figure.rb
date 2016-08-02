@@ -41,9 +41,6 @@ class Figure
 
   def check_target_node (target, board)
     if board.figure(target)
-      return false if board.figure(target).class == King
-    end
-    if board.figure(target)
       return false if board.figure(target).color == @color  #if node is busy of same color
     end
     return true
