@@ -44,7 +44,7 @@ class Game
     return cover_figures if cover_figures != []
     return false
   end
-  
+
   def any_move_to?(target, board, color)
     figures =  board.figures.select{ |figure| figure.color == color && figure.position[0].between?("A", "H") }
     cover_figures = figures.select { |figure| figure.allowed_turn( target, board) }
@@ -56,6 +56,13 @@ class Game
     return false if figure.class == Pawn || figure.class == Knight || figure.class == King
     derection = figure.find_derection(target)
     return true if figure.scan_derect(derection, target){ |cell|   any_move_to?(cell, board, figure.enimy_color)  }
+    return false
+  end
+
+  def check_sash(board, color)
+    figure =  board.figures.select{ |figure| figure.color == color && figure.class == King }[0]
+    position = figure.position
+    return true if  broken?(position, board, figure.enimy_color) != false
     return false
   end
 
