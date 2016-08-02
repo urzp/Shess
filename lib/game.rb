@@ -45,4 +45,11 @@ class Game
     return false
   end
 
+  def ability_block_figure?(figure, target, board)
+    return false if figure.class == Pawn || figure.class == Knight || figure.class == King
+    derection = figure.find_derection(target)
+    return true if figure.scan_derect(derection, target){ |cell|   any_move_to?(cell, board, figure.enimy_color)  }
+    return false
+  end
+
 end
