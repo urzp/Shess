@@ -2,7 +2,7 @@ class Figure
 
 
 
-  attr_reader :color, :position, :symbol
+  attr_reader :color, :position, :symbol, :count_turn
   attr_writer :position
 
   def initialize(color)
@@ -93,19 +93,60 @@ class King < Figure
 
   def initialize(color)
     super
-    @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
     @length_derctions = 1
     if @color == :white
+      @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1], [-3,0], [2,0] ]
       @symbol = "\u265B"
       @position = "E8"
     else
+      @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1], [-2,0], [3,0] ]
       @symbol = "\u2655"
       @position = "D1"
     end
   end
 
+  def ability_casting(target, targ_der, board)
+    if board.check_sash(@color)
+      puts "Is not possable make a casting #{target}, becouse is sash"
+      return false
+    end
+    if board.broken?(target, enimy_color) != false
+      puts "Is not possable make a casting #{target}, becouse the cell as broken"
+      return false
+    end
+    rook = board.figure("A1") if targ_der == [-2,0]
+    rook = board.figure("H1") if targ_der == [3,0]
+    rook = board.figure("A8") if targ_der == [-3,0]
+    rook = board.figure("H8") if targ_der == [2,0]
+    if rook.count_turn > 0
+      puts "Is not possable make a casting #{target}, becouse Rook is already made a turn"
+      return false
+    end
+    @length_derctions = 3
+    targ_der = [-1,0] if targ_der == [-2,0] || targ_der == [-3,0]
+    targ_der = [1,0] if targ_der == [2,0] || targ_der == [3,0]
+    if scan_derect(targ_der, target){ |cell_scan| board.figure(cell_scan) }
+      @length_derctions = 1
+      return false
+    end
+    return true
+  end
+
   def allowed_turn(target, board, bit = false)
-    super
+    return false if !check_target_node(target, board)
+    targ_der = find_derection(target)
+    return false if targ_der == nil
+    return ability_casting(target, targ_der, board) if targ_der == [-2,0] || targ_der == [-3,0] || targ_der == [2,0] || targ_der == [3,0]
+    return false if scan_derect(targ_der, target){ |cell_scan| board.figure(cell_scan) }
+    return true
+  end
+
+  def turn(target)
+    if @derctions.size == 10
+      @derctions.delete_at(10)
+      @derctions.delete_at(9)
+    end
+    @position = target
   end
 
 end
