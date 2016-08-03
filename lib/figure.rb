@@ -110,10 +110,6 @@ class King < Figure
       puts "Is not possable make a casting #{target}, becouse is sash"
       return false
     end
-    if board.broken?(target, enimy_color) != false
-      puts "Is not possable make a casting #{target}, becouse the cell as broken"
-      return false
-    end
     rook = board.figure("A1") if targ_der == [-2,0]
     rook = board.figure("H1") if targ_der == [3,0]
     rook = board.figure("A8") if targ_der == [-3,0]
@@ -133,6 +129,10 @@ class King < Figure
   end
 
   def allowed_turn(target, board, bit = false)
+    if bit ==  false && board.broken?(target, enimy_color) != false
+      puts "Is not possable turn for King to #{target}, becouse the cell as broken"
+      return false
+    end
     return false if !check_target_node(target, board)
     targ_der = find_derection(target)
     return false if targ_der == nil
