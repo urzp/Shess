@@ -130,7 +130,6 @@ class King < Figure
 
   def allowed_turn(target, board, bit = false)
     if bit ==  false && board.broken?(target, enimy_color) != false
-      puts "Is not possable turn for King to #{target}, becouse the cell as broken"
       return false
     end
     return false if !check_target_node(target, board)
@@ -259,7 +258,7 @@ class Knight < Figure
     end
 
     def allowed_turn(target, board, bit = false)
-      return false if !check_target_node(target, board)
+      return false if !check_target_node(target, board) && bit == false
       targ_der = @derctions.find{ |der| sum_der_coord(@position, der) == target}
       return false if targ_der == nil
       return true
