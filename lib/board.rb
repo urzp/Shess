@@ -58,10 +58,16 @@ class Board
     return @board[position]
   end
 
+  def sum_der_coord(position, der)
+    char = position[0].ord + der[0]
+    numb = position[1].to_i  + der[1]
+    return char.chr + numb.to_s
+  end
+
   def tool_move(position_figure, new_position)
     figure = self.figure(position_figure)
     figure.position = new_position
-    self.draw
+    #self.draw
   end
 
   def refull_board(figures = @figures)
@@ -109,6 +115,30 @@ class Board
     position = figure.position
     return true if  broken?(position, figure.enimy_color) != false
     return false
+  end
+
+  def check_mat(color)
+    figure =  @figures.select{ |figure| figure.color == color && figure.class == King }[0]
+    position = figure.position
+    broken = broken?(position, figure.enimy_color)
+    if broken  == false
+      return false
+    else
+      derections = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
+      derections.each do |der|
+        target = sum_der_coord(figure.position, der)
+        next if !target[0].between?("A", "H") || !target[1].between?("1", "8")
+        return false  if figure.allowed_turn(target, self)
+      end
+
+      attak_figure = broken[0] # it be only one figure which can make a sash
+      broken_attak_figure = broken?(attak_figure.position, attak_figure.enimy_color)
+      return false if broken_attak_figure  != false  && ( broken_attak_figure[0].class != King || broken_attak_figure.size > 1  ) # can we bit the attak_figure but not by King
+      return false if broken_attak_figure  != false && broken_attak_figure[0].class == King && broken?(attak_figure.position, @color) != false# can we bit the attak_figure  by King but not suppotr attak_figure
+      return false if ability_block_figure?(attak_figure, figure.position) # can we block the attak_figure?
+    end
+
+    return true
   end
 
 end
