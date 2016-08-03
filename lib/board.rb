@@ -83,6 +83,34 @@ class Board
     end
   end
 
+  def broken?(target, color)
+    figures =  @figures.select{ |figure| figure.color == color && figure.position[0].between?("A", "H") }
+    cover_figures = figures.select { |figure| figure.allowed_turn( target, self, true) }
+    return cover_figures if cover_figures != []
+    return false
+  end
+
+  def any_move_to?(target, color)
+    figures =  @figures.select{ |figure| figure.color == color && figure.position[0].between?("A", "H") }
+    cover_figures = figures.select { |figure| figure.allowed_turn( target, self) }
+    return cover_figures if cover_figures != []
+    return false
+  end
+
+  def ability_block_figure?(figure, target)
+    return false if figure.class == Pawn || figure.class == Knight || figure.class == King
+    derection = figure.find_derection(target)
+    return true if figure.scan_derect(derection, target){ |cell|   any_move_to?(cell, figure.enimy_color)  }
+    return false
+  end
+
+  def check_sash(color)
+    figure =  @figures.select{ |figure| figure.color == color && figure.class == King }[0]
+    position = figure.position
+    return true if  broken?(position, figure.enimy_color) != false
+    return false
+  end
+
 end
 
 
