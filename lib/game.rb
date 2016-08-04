@@ -5,6 +5,11 @@ class Game
     @player_2 = player_2
   end
 
+  def enimy_player(player)
+    return @player_2 if @player_1 == player
+    return @player_1 if @player_2 == player
+  end
+
   def turn(player, turn, board)
     start = turn[0]
     target = turn[1]
@@ -12,8 +17,10 @@ class Game
     figure_t = board.figure(target)
     figure.turn(target, board)
     transform_pawn( figure, board) if figure.class == Pawn && ( figure.position[1] == "1" || figure.position[1] == "8" )
-    figure_t.bit if figure_t && figure_t.class != King
+    figure_t.bit if figure_t
     board.draw
+    puts "The #{enimy_player(player).color} King is under Sash ! " if board.check_sash( enimy_player(player).color )
+    puts "For the #{enimy_player(player).color} player is Mat !!!" if board.check_mat( enimy_player(player).color )
   end
 
 
