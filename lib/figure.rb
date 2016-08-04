@@ -29,7 +29,7 @@ class Figure
     return :black if self.color == :white
   end
 
-  def turn(target)
+  def turn(target, board)
     @position = target
     @count_turn += 1
   end
@@ -47,7 +47,9 @@ class Figure
   end
 
   def find_derection(target)
-    targ_der = @derctions.find { |der| (0...@length_derctions).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target } }
+    targ_der = @derctions.find do |der|
+      (0...@length_derctions).any? { |n| sum_der_coord(@position, next_node_der(der, n)) == target }
+    end
     return targ_der
   end
 
@@ -71,6 +73,8 @@ class Figure
   end
 
 end
+
+#========================================================================================
 
 class Queen < Figure
 
@@ -118,13 +122,14 @@ class King < Figure
       puts "Is not possable make a casting #{target}, becouse Rook is already made a turn"
       return false
     end
-    @length_derctions = 3
+    @length_derctions = 3 # check any figure one the way to target
     targ_der = [-1,0] if targ_der == [-2,0] || targ_der == [-3,0]
     targ_der = [1,0] if targ_der == [2,0] || targ_der == [3,0]
     if scan_derect(targ_der, target){ |cell_scan| board.figure(cell_scan) }
       @length_derctions = 1
       return false
     end
+    @length_derctions = 1
     return true
   end
 
@@ -140,7 +145,13 @@ class King < Figure
     return true
   end
 
-  def turn(target)
+  def turn(target, board)
+    targ_der = find_derection(target) # take Rook for casting turn
+    board.tool_move("A1", "C1") if targ_der == [-2,0]
+    board.tool_move("H1", "F1") if targ_der == [3,0]
+    board.tool_move("A8", "C8") if targ_der == [-3,0]
+    board.tool_move("H8", "F8") if targ_der == [2,0]
+
     if @derctions.size == 10
       @derctions.delete_at(10)
       @derctions.delete_at(9)
@@ -321,7 +332,7 @@ class Pawn < Figure
       return true
   end
 
-  def turn(target)
+  def turn(target, board)
     @derctions.delete_at(1) if @derctions.size == 4
     @position = target
   end

@@ -10,7 +10,7 @@ class Game
     target = turn[1]
     figure = board.figure(start)
     figure_t = board.figure(target)
-    figure.turn(target)
+    figure.turn(target, board)
     transform_pawn( figure, board) if figure.class == Pawn && ( figure.position[1] == "1" || figure.position[1] == "8" )
     figure_t.bit if figure_t && figure_t.class != King
     board.draw
