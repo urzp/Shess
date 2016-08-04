@@ -22,7 +22,7 @@ class Human < Player
       selection = turn[0] if turn != nil
       selection = gets.upcase.chomp if turn == nil
       selection_target = selection[3] + selection[4] if selection[3] != nil && selection[4] != nil
-      selection = selection[0] + selection[1]
+      selection = selection[0] + selection[1] if selection[0] != nil && selection[1] != nil
       if check_select(selection)
          break if check_figure(selection, board)
       end
