@@ -14,7 +14,7 @@ class Human < Player
     super
   end
 
-  def turn(board,turn = nil)
+  def turn(board, turn = nil)
     puts "Please take you turn by any #{@color} figure."
     counter = 0
     while true do
@@ -39,7 +39,11 @@ class Human < Player
       if check_select(selection_target)
         figure = board.figure(selection )
         if figure.allowed_turn(selection_target, board)
-          return [selection, selection_target]
+          if board.escape_sash?(figure, selection_target)
+            return [selection, selection_target]
+          else
+            puts "Is not allowed go to \"#{selection_target}\". There is still Shah  "
+          end
         else
           puts "Is not allowed the turn #{selection_target}"
         end

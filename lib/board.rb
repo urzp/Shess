@@ -117,6 +117,14 @@ class Board
     return false
   end
 
+  def escape_sash?(figure, target)
+    position = figure.position
+    tool_move(position, target)
+    result = !check_sash(figure.color)
+    tool_move(target, position)
+    return result
+  end
+
   def check_mat(color)
     figure =  @figures.select{ |figure| figure.color == color && figure.class == King }[0]
     position = figure.position
