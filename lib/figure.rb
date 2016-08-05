@@ -6,7 +6,7 @@ class Figure
   attr_writer :position
 
   def initialize(color)
-    @@out = 0
+    @@out = 0 if !defined? @@out
     @count_turn = 0
     @color = color
   end
