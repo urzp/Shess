@@ -185,7 +185,10 @@ class Board
       derections.each do |der|
         target = sum_der_coord(figure.position, der)
         next if !target[0].between?("A", "H") || !target[1].between?("1", "8")
-        return false  if figure.allowed_turn(target, self)
+        if figure.allowed_turn(target, self)
+          return false if escape_sash?(figure, target)
+        end
+
       end
 
       attak_figure = broken[0] # it be only one figure which can make a sash
