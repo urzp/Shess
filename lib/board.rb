@@ -14,7 +14,12 @@ class Board
     @figures << figure
   end
 
-  def draw
+  def draw(pozition_from = :white)
+    draw_from_white if pozition_from == :white
+    draw_from_black if pozition_from == :black
+  end
+
+  def draw_from_white
     refull_board(@figures)
     1.upto(8) do |y|
       x = 0
@@ -52,6 +57,47 @@ class Board
       end
     end
   end
+
+  def draw_from_black
+    refull_board(@figures)
+    8.downto(1) do |y|
+      x = 0
+      line = ""
+      8.downto(1) do |char|
+        char = (char + 64).chr
+        x = x + 1
+        cell = "#{char}#{y}"
+        figure = @board[cell]
+        symbol = figure.symbol if figure != nil
+        symbol = "   " if figure == nil
+        line = line + "\u2502" + symbol
+      end
+      figure = @board["out" + y.to_s]
+      symbol = figure.symbol if figure != nil
+      symbol = "   " if figure == nil
+      out1 = symbol
+      figure = @board["out" + (8 + y).to_s]
+      symbol = figure.symbol if figure != nil
+      symbol = "   " if figure == nil
+      out2 = symbol
+      figure = @board["out" + (16 + y).to_s]
+      symbol = figure.symbol if figure != nil
+      symbol = "   " if figure == nil
+      out3 = symbol
+
+      if y == 8
+        puts "  \u250C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u252C\u2500\u2500\u2500\u2510 --------------"
+      else
+        puts "  \u251C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u253C\u2500\u2500\u2500\u2524 --------------"
+      end
+      puts "#{y} #{line}\u2502  #{out1}  #{out2} #{out3} "
+      if y == 1
+        puts "  \u2514\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2518 --------------"
+        puts "    H   G   F   E   D   C   B   A    "
+      end
+    end
+  end
+
 
   def figure(position)
     self.refull_board
@@ -119,9 +165,12 @@ class Board
 
   def escape_sash?(figure, target)
     position = figure.position
-    tool_move(position, target)
+    figure_target = figure(target)
+    figure.position = target
+    figure_target.position = :temp if figure_target
     result = !check_sash(figure.color)
-    tool_move(target, position)
+    figure_target.position = target if figure_target
+    figure.position = position
     return result
   end
 
