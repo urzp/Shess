@@ -16,6 +16,7 @@ class Human < Player
 
   def turn(board, turn = nil)
     puts "Please take you turn by any #{@color} figure."
+    board.draw(@color)
     counter = 0
     while true do
       puts "Chose your #{@color} figure"
@@ -23,11 +24,13 @@ class Human < Player
       selection = gets.upcase.chomp if turn == nil
       selection_target = selection[3] + selection[4] if selection[3] != nil && selection[4] != nil
       selection = selection[0] + selection[1] if selection[0] != nil && selection[1] != nil
+      return false if  selection[0] == "R"
+      return :main_meny if  selection [0] == "Q"
       if check_select(selection)
          break if check_figure(selection, board)
       end
       counter += 1
-      return false if counter > 5
+      return false if counter > 3
     end
 
     puts "Please put target for your figure." if selection_target == nil
@@ -36,6 +39,8 @@ class Human < Player
       puts "Chose your target cell" if selection_target == nil
       selection_target = turn[1] if turn != nil
       selection_target = gets.upcase.chomp if selection_target == nil
+      return false if  selection_target[0] == "R"
+      return :main_meny if  selection_target[0] == "Q"
       if check_select(selection_target)
         figure = board.figure(selection )
         if figure.allowed_turn(selection_target, board)
@@ -50,7 +55,7 @@ class Human < Player
       end
       counter += 1
       selection_target = nil
-      return false if counter > 5
+      return false if counter > 3
     end
 
   end
