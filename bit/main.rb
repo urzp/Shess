@@ -70,29 +70,55 @@ def help_meny
   main_meny
 end
 
-def game
+def new_game
+  puts "new game"
   board = Board.new
   player_1 = Human.new(:white)
   player_2 = Human.new(:black)
   game = Game.new(player_1, player_2)
 
-  1.upto(30) do
+  1.upto(300) do
     turn = false
     while turn == false do
        turn = player_1.turn(board)
+       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
     end
     game.turn(player_1, turn, board)
     turn = false
     while turn == false do
        turn = player_2.turn(board)
+       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
     end
     game.turn(player_2, turn, board)
   end
 end
 
+def continue (save_game)
+  puts "continue"
+  game = save_game[:game]
+  board = save_game[:board]
+  player_1 = save_game[:player_1]
+  player_2 = save_game[:player_2]
 
+  1.upto(300) do
+    turn = false
+    while turn == false do
+       turn = player_1.turn(board)
+       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
+    end
+    game.turn(player_1, turn, board)
+    turn = false
+    while turn == false do
+       turn = player_2.turn(board)
+       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
+    end
+    game.turn(player_2, turn, board)
+  end
+end
 
 main_meny
+
+rezult = {}
 
 while true do
   selection = "0"
@@ -101,7 +127,11 @@ while true do
   end
 
   help_meny if selection == "1"
-  game if selection == "2"
+  rezult = new_game if selection == "2"
+  continue (rezult) if selection == "3"
 
-
+  if rezult[:exit] == true
+    rezult[:exit] = false
+    main_meny
+  end
 end
