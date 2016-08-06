@@ -1,8 +1,16 @@
 class Game
 
-  def initialize(player_1,player_2)
+  attr :player_1, :player_2, :board, :status
+
+  def initialize(player_1,player_2, board)
     @player_1 = player_1
     @player_2 = player_2
+    @board = board
+    @status = :new
+  end
+
+  def status=(status)
+    @status = status
   end
 
   def enimy_player(player)
