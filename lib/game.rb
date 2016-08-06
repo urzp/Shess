@@ -18,7 +18,8 @@ class Game
     return @player_1 if @player_2 == player
   end
 
-  def turn(player, turn, board)
+  def turn(player, turn)
+    board = @board
     start = turn[0]
     target = turn[1]
     figure = board.figure(start)
@@ -33,6 +34,7 @@ class Game
 
 
   def transform_pawn(selection = nil, pawn, board)
+    board = @board
     while selection != "Q" && selection != "R" && selection != "B" && selection != "K" do
     puts "Puts the new figure. Where \"Q\" - Queen, \"R\" - Rook, \"B\" - Bishop, \"K\" - Knight"
     selection = gets.upcase.chomp
