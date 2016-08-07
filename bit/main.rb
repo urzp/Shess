@@ -5,6 +5,8 @@ require '../lib/board'
 require '../lib/figure'
 require '../lib/game'
 
+require 'yaml'
+
 def main_meny()
   puts "============================================================================================================"
   puts
@@ -75,50 +77,43 @@ def new_game
   board = Board.new
   player_1 = Human.new(:white)
   player_2 = Human.new(:black)
-  game = Game.new(player_1, player_2)
+  game = Game.new(player_1, player_2, board)
+  turns(game)
+end
 
+def continue (game)
+  puts "continue"
+  turns(game)
+end
+
+def turns(game)
   1.upto(300) do
     turn = false
     while turn == false do
-       turn = player_1.turn(board)
-       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
+       player = game.next_palayer?
+       turn = player.turn(game.board)
+     if turn == :main_meny
+        game.status=:pause
+        return game
+     end
     end
-    game.turn(player_1, turn, board)
-    turn = false
-    while turn == false do
-       turn = player_2.turn(board)
-       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
-    end
-    game.turn(player_2, turn, board)
+    game.turn(player, turn)
   end
 end
 
-def continue (save_game)
-  puts "continue"
-  game = save_game[:game]
-  board = save_game[:board]
-  player_1 = save_game[:player_1]
-  player_2 = save_game[:player_2]
-
-  1.upto(300) do
-    turn = false
-    while turn == false do
-       turn = player_1.turn(board)
-       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
-    end
-    game.turn(player_1, turn, board)
-    turn = false
-    while turn == false do
-       turn = player_2.turn(board)
-       return { game:game, board:board, player_1:player_1, player_2:player_2, exit:true } if turn == :main_meny
-    end
-    game.turn(player_2, turn, board)
+def save(game)
+  yaml = YAML::dump(game)
+  File.open("saved.yaml", "w") do |game_file|
+    game_file.write(yaml)
   end
+end
+
+def load
+  yaml = File.read("saved.yaml")
+  YAML::load(yaml)
 end
 
 main_meny
-
-rezult = {}
 
 while true do
   selection = "0"
@@ -126,12 +121,34 @@ while true do
     selection = gets.upcase.chomp
   end
 
-  help_meny if selection == "1"
-  rezult = new_game if selection == "2"
-  continue (rezult) if selection == "3"
+  if selection == "1"
+    help_meny
+  end
 
-  if rezult[:exit] == true
-    rezult[:exit] = false
+  if selection == "2"
+    game = new_game
+    status = game.status
+  end
+
+  if selection == "3"
+    game = continue(game)
+    status = game.status
+  end
+
+  if selection == "4"
+    save(game)
+    puts "game is saved"
+  end
+
+  if selection == "5"
+    game = load()
+    game = continue(game)
+    status = game.status
+  end
+
+  if status == :pause
+    status = false
+    game.status= false
     main_meny
   end
 end
