@@ -7,6 +7,20 @@ class Game
     @player_2 = player_2
     @board = board
     @status = :new
+    @next_palayer = player_1 if @player_1.color == :white
+    @next_palayer = player_2 if @player_2.color == :white
+  end
+
+  def next_palayer?
+    return @next_palayer
+  end
+
+  def switch_player(player)
+    #puts "@next_palayer #{@next_palayer.color}"
+    #puts "income #{player.color}"
+    @next_palayer = @player_1 if player == @player_2
+    @next_palayer = @player_2 if player == @player_1
+    #puts "outcome #{@next_palayer.color}"
   end
 
   def status=(status)
@@ -19,6 +33,7 @@ class Game
   end
 
   def turn(player, turn)
+    #puts "turn income #{player.color}"
     board = @board
     start = turn[0]
     target = turn[1]
@@ -30,6 +45,8 @@ class Game
     board.draw
     puts "The #{enimy_player(player).color} King is under Shah ! " if board.check_sash( enimy_player(player).color )
     puts "For the #{enimy_player(player).color} player is Mat !!!" if board.check_mat( enimy_player(player).color )
+    #puts "turn out income #{player.color}"
+    switch_player(player)
   end
 
 
