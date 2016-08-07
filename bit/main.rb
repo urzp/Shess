@@ -8,6 +8,14 @@ require '../lib/game'
 require 'yaml'
 
 def main_meny()
+  puts
+  puts
+  puts
+  puts
+  puts
+  puts
+  puts
+  puts
   puts "============================================================================================================"
   puts
   puts
@@ -114,8 +122,9 @@ def load
 end
 
 main_meny
+exit = false
 
-while true do
+while true && exit == false do
   selection = "0"
   until  selection  > "0" && selection < "7" do #selection.class == Fixnum &&
     selection = gets.upcase.chomp
@@ -131,7 +140,11 @@ while true do
   end
 
   if selection == "3"
-    game = continue(game)
+    if defined?game == false
+      game = new_game
+    else
+      game = continue(game)
+    end
     status = game.status
   end
 
@@ -144,6 +157,10 @@ while true do
     game = load()
     game = continue(game)
     status = game.status
+  end
+
+  if selection == "6"
+    exit = true
   end
 
   if status == :pause
