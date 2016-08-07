@@ -82,11 +82,10 @@ class Queen < Figure
     super
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1] ]
     @length_derctions = 8
+    @symbol = :queen
     if @color == :white
-      @symbol = "\u265A"
       @position = "D8"
     else
-      @symbol = "\u2654"
       @position = "E1"
     end
   end
@@ -98,13 +97,12 @@ class King < Figure
   def initialize(color)
     super
     @length_derctions = 1
+    @symbol = :king
     if @color == :white
       @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1], [-3,0], [2,0] ]
-      @symbol = "\u265B"
       @position = "E8"
     else
       @derctions = [ [0,1], [0,-1], [-1,0],  [1,0], [1,1], [1,-1], [-1,-1],  [-1,1], [-2,0], [3,0] ]
-      @symbol = "\u2655"
       @position = "D1"
     end
   end
@@ -172,13 +170,12 @@ class Rook < Figure
     @@count_white = 0 if @@count_white == 2
     @derctions = [ [0,1], [0,-1], [-1,0],  [1,0] ]
     @length_derctions = 8
+    @symbol = :rook
     if @color == :white
       @@count_white += 1
-      @symbol = "\u265C"
       @position = "A8" if @@count_white == 1
       @position = "H8" if @@count_white == 2
     else
-      @symbol = "\u2656"
       @@count_black += 1
       @position = "A1" if @@count_black == 1
       @position = "H1" if @@count_black == 2
@@ -210,13 +207,12 @@ class Bishop < Figure
       @@count_white = 0 if @@count_white == 2
       @derctions = [ [1,1], [1,-1], [-1,-1],  [-1,1] ]
       @length_derctions = 8
+      @symbol = :bishop
       if @color == :white
         @@count_white += 1
-        @symbol = "\u265D"
         @position = "C8" if @@count_white == 1
         @position = "F8" if @@count_white == 2
       else
-        @symbol = "\u2657"
         @@count_black += 1
         @position = "C1" if @@count_black == 1
         @position = "F1" if @@count_black == 2
@@ -247,13 +243,12 @@ class Knight < Figure
       @@count_black = 0 if @@count_black == 2
       @@count_white = 0 if @@count_white == 2
       @derctions = [ [1,2], [2,1], [2,-1], [1,-2], [-1,-2], [-2,-1], [-2,1], [-1,2] ]
+      @symbol = :knight
       if @color == :white
         @@count_white += 1
-        @symbol = "\u265E"
         @position = "B8" if @@count_white == 1
         @position = "G8" if @@count_white == 2
       else
-        @symbol = "\u2658"
         @@count_black += 1
         @position = "B1" if @@count_black == 1
         @position = "G1" if @@count_black == 2
@@ -286,13 +281,12 @@ class Pawn < Figure
       super
       @@count_black = 0 if @@count_black == 8
       @@count_white = 0 if @@count_white == 8
+        @symbol = :pawn
       if @color == :white
         @@count_white += 1
-        @symbol = "\u265F" #"\u265F"
         @position = (64+@@count_white).chr+"7"
         @derctions = [[0,-1],[0,-2],[-1,-1],[1,-1]]
       else
-        @symbol = "\u2659" #"\u2659"
         @@count_black += 1
         @position = (64+@@count_black).chr+"2"
         @derctions = [[0,1],[0,2],[1,1],[-1,1]]

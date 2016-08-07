@@ -19,6 +19,15 @@ class Board
     draw_from_black if pozition_from == :black
   end
 
+  def shess_sumbol(figure)
+    if figure != nil
+      color =  figure.color
+      symbol = CHESS_SUMBOLS_white[figure.symbol] if color == :white
+      symbol = CHESS_SUMBOLS_black[figure.symbol] if color == :black
+    end
+    return symbol
+  end
+
   def draw_from_white
     refull_board(@figures)
     1.upto(8) do |y|
@@ -28,20 +37,20 @@ class Board
         x = x + 1
         cell = "#{char}#{y}"
         figure = @board[cell]
-        symbol = figure.symbol if figure != nil
+        symbol = shess_sumbol(figure)
         symbol = "   " if figure == nil
         line = line + "\u2502" + symbol
       end
       figure = @board["out" + y.to_s]
-      symbol = figure.symbol if figure != nil
+      symbol = shess_sumbol(figure)
       symbol = "   " if figure == nil
       out1 = symbol
       figure = @board["out" + (8 + y).to_s]
-      symbol = figure.symbol if figure != nil
+      symbol = shess_sumbol(figure)
       symbol = "   " if figure == nil
       out2 = symbol
       figure = @board["out" + (16 + y).to_s]
-      symbol = figure.symbol if figure != nil
+      symbol = shess_sumbol(figure)
       symbol = "   " if figure == nil
       out3 = symbol
 
@@ -68,20 +77,20 @@ class Board
         x = x + 1
         cell = "#{char}#{y}"
         figure = @board[cell]
-        symbol = figure.symbol if figure != nil
+        symbol = shess_sumbol(figure)
         symbol = "   " if figure == nil
         line = line + "\u2502" + symbol
       end
       figure = @board["out" + y.to_s]
-      symbol = figure.symbol if figure != nil
+      symbol = shess_sumbol(figure)
       symbol = "   " if figure == nil
       out1 = symbol
       figure = @board["out" + (8 + y).to_s]
-      symbol = figure.symbol if figure != nil
+      symbol = shess_sumbol(figure)
       symbol = "   " if figure == nil
       out2 = symbol
       figure = @board["out" + (16 + y).to_s]
-      symbol = figure.symbol if figure != nil
+      symbol = shess_sumbol(figure)
       symbol = "   " if figure == nil
       out3 = symbol
 
@@ -204,13 +213,5 @@ class Board
 end
 
 
-
-class Node
-  attr_reader :name, :position, :figure
-
-  def initialize(name, position, figure = nil)
-    @name = name
-    @position = position
-    @figure = figure
-  end
-end
+CHESS_SUMBOLS_white = { king: "\u265A", queen: "\u265B", rook: "\u265C", bishop: "\u265D", knight:"\u265E", pawn: "\u265F", }
+CHESS_SUMBOLS_black = { king: "\u2654", queen: "\u2655", rook: "\u2656", bishop: "\u2657", knight:"\u2658", pawn: "\u2659", }
